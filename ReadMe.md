@@ -67,7 +67,7 @@ For this assignment you will need some specific tools
 * Your analysis must have **no more than three figures**. Figures may have multiple plots in them (i.e. panel plots), but there cannot be more than three figures total.
 * You must show all your code for the work in your analysis document. This may make the document a bit verbose, but that is okay. In general, you should ensure that **echo = TRUE** for every code chunk (this is the default setting in knitr).  
 
-##Publishing Your Analysisless 
+##Publishing Your Analysis
 For this assignment you will need to publish your analysis on RPubs.com. If you do not already have an account, then you will have to create a new account. After you have completed writing your analysis in RStudio, you can publish it to RPubs by doing the following:
 
 
@@ -79,6 +79,6 @@ Once your document is published to RPubs, you should get a unique URL to that do
 
 **NOTE**: If you are having trouble connecting with RPubs due to proxy-related or other issues, you can upload your final analysis document file as a PDF to Coursera instead.
 
-##Submitting Your Assignmentless 
+##Submitting Your Assignment
 In order to submit this assignment, you must copy the RPubs URL for your completed data analysis document in to the peer assessment question.
 
