@@ -1,0 +1,30 @@
+---
+title: "Analysing Storm Data"
+author: "Wong Jee Khen"
+date: "10 May 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+# Analysis of Storm Data
+
+
+
+## Data Processing
+```{r}
+download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2","FStormData.csv.bz2")
+
+data <- read.csv("FStormData.csv.bz2")
+
+```
+
+```{r}
+
+summary(data)
+
+head(data)
+```
