@@ -1,30 +1,120 @@
----
-title: "Analysing Storm Data"
-author: "Wong Jee Khen"
-date: "10 May 2016"
-output: html_document
----
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
-# Analysis of Storm Data
+# **Coursera - Reproducible Research Project 2**
 
+### ***Title***
+Impact on People and Property due to Severe Weather Across US
 
+### ***Synopsis***
+In the following analyses report, we will be investigating which event bring about the greatest impact to people and propoerty in US. This report will bring you through the necessary steps that resulted in the final conclusion as stated below:
 
-## Data Processing
+Events with the greatest impact ~  
+- To People: **TORNADO**  
+- To Property: **T**  
+ 
+
+### ***Data Processing***
+
+Download data set, reading it into a data frame and give a summary of the raw data.
+
 ```{r}
 download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2","FStormData.csv.bz2")
-
 data <- read.csv("FStormData.csv.bz2")
-
 ```
+  
+#### ***1. Calulation of impact to people***
+
+To find the event with the greatest impact on people, we will be using the sum of the total amount of fatalities that each event caused across the whole set of data for each event. Finally, we will only be extracting the top 5 for the analysis of the final result.
 
 ```{r}
-
-summary(data)
-
-head(data)
+fatal_set <- aggregate(data$FATALITIES, by=list(data$EVTYPE), sum)
+names(fatal_set) <- c("EVTYPE", "FATALITIES")
+ordered_fatalities <- fatal_set[order(fatal_set$FATALITIES, decreasing = TRUE),]
+top_fata <- head(ordered_fatalities, 5)
 ```
+
+Other than fatalities, it is important to also consider injuries to people as this also impact on the normal daily life of the people. Thus, to properly calculate the value for impact, injuries should theortically also be included in our calculation. 
+
+
+```{r}
+inj_set <- aggregate(data$INJURIES, by=list(data$EVTYPE), sum)
+names(inj_set) <- c("EVTYPE", "INJURIES")
+ordered_injuries <- inj_set[order(inj_set$INJURIES, decreasing = TRUE),]
+top_inj <- head(ordered_injuries, 5)
+# 
+# data$fata_inj <- data$FATALITIES + data$INJURIES
+# fata_inj_set <- aggregate(data$fata_inj, by=list(data$EVTYPE), sum)
+# names(fata_inj_set) <- c("EVTYPE", "fata_inj")
+# ordered_fata_inj<- fata_inj_set[order(fata_inj_set$fata_inj, decreasing = TRUE),]
+# top_fata_inj <- head(ordered_fata_inj, 5)
+
+```
+
+After this session of data processing, we would have 3 unique data set which is a table that contains fatalities that each event cause, a table that contain injuries that each event cause and lastly a table that contains a sum of fatalities and injuries that each event caused. All this 3 datasets will be use in the final section supplement our conclusion
+
+#### ***2. Calulation of impact to property***
+  
+For our calculation for impact of property, we will be using figures from both the property damages data and crop damages data. By the end of our calculation, we will have 2 set of tables one contain the top 5 event that does the most property damage and top 5 event that does the top most crop damange.
+
+```{r}
+propdmg_set <- aggregate(data$PROPDMG, by=list(data$EVTYPE), sum)
+names(propdmg_set) <- c("EVTYPE","PROPDMG")
+ordered_propdmg <- propdmg_set[order(propdmg_set$PROPDMG, decreasing = TRUE),]
+top_5_prop <- head(ordered_propdmg, 5)
+
+cropdmg_set <- aggregate(data$CROPDMG, by=list(data$EVTYPE), sum)
+names(cropdmg_set) <- c("EVTYPE","CROPDMG")
+ordered_cropdmg <- cropdmg_set[order(cropdmg_set$CROPDMG, decreasing = TRUE),]
+top_5_crop <- head(ordered_cropdmg, 5)
+
+```
+
+### ***Results***
+
+Load the necessary library for plotting of results
+```{r add libraries}
+# library(ggplot2)
+```
+
+#### ***1. Event that impact people the most***
+
+```{r}
+top_fata$EVTYPE <- ordered(top_fata$EVTYPE, levels=levels(top_fata$EVTYPE)[unclass(top_fata$EVTYPE)])
+ggplot(top_fata, aes(x=EVTYPE,y=FATALITIES)) + geom_bar(stat="identity") + xlab("Top 5 Weather Events") + ylab("No. of Fatalities") + ggtitle("Weather Event that has the Highest Fatalities ")
+```
+
+According to the plot Event vs Fatalities chart. We can observe that the event with the highest fatalies is Tornado.
+
+```{r}
+top_inj$EVTYPE <- ordered(top_inj$EVTYPE, levels=levels(top_inj$EVTYPE)[unclass(top_inj$EVTYPE)])
+ggplot(top_inj, aes(x=EVTYPE,y=INJURIES)) + geom_bar(stat="identity") + xlab("Top 5 Weather Events") + ylab("No. of Injuries") + ggtitle("Weather Event that has the Highest Injuries ")
+```
+
+Similar to the most deadly weather event, the weather event with the highest injuries is also tornado.
+
+Thus, we can come to a conclusion that the weather event that caused high fatalities and injuries is **Tornado**.
+
+#### ***2. Event that impact property the most***
+
+
+```{r}
+# top_5_prop$EVTYPE <- ordered(top_5_prop$EVTYPE, levels=levels(top_5_prop$EVTYPE)[unclass(top_5_prop$EVTYPE)])
+# ggplot(top_5_prop, aes(x=EVTYPE,y=CROPDMG)) + geom_bar(stat="identity")
+```
+
+Target Columns are FATALITIES, INJURIES, Country Name, state, EvTYPE
+ "PROPDMG"    "PROPDMGEXP" "CROPDMG"    "CROPDMGEXP"
+
+
+Across the United States, which types of events (as indicated in the EVTYPE variable) are most harmful with respect to population health?
+
+Across the United States, which types of events have the greatest economic consequences?
+
+
+
+
+
+
